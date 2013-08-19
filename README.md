@@ -11,5 +11,6 @@ Forked [GeoPHP project] (https://code.google.com/p/geophp/) and updated it from 
 
 
 ### USAGE
-Simply copy index.php file along with all your KML files into the same web folder.
-Then open your browser and go to the index.php file on your web server (e.g. www.mywebsite.com/index.php)
+ - Update index.php assigning a value to the Javascript and the PHP "basedir" variable (e.g. "www.mywebsite.it/mymaps/")
+ - Copy index.php file along with all your KML files into the same web folder
+ - Open your browser and go to the index.php file on your web server (e.g. www.mywebsite.com/mymaps/index.php)
