@@ -1,4 +1,4 @@
 GoogleMaps_KML_viewer
 =====================
 
-PHP system that list and plots KML files in a google map automaticaly generated.
+PHP system to automatically list and plot KML files in a Google Map.
