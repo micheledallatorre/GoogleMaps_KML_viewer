@@ -1,102 +1,84 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" 
-xmlns:v="urn:schemas-microsoft-com:vml">
+  <!-- 
+  original GeoPHP https://code.google.com/p/geophp/ released under Apache Licence 2.0
+  modified by Michele Dalla Torre
+  -->
+<!DOCTYPE html>
+<html>
   <head>
-    <script src="http://maps.google.com/maps?file=api&amp;v=2.x&amp;key=ABQIAAAA5Ekx1hr1F5dJzNLzAkeDFxQVPxdEPnWfeUxsKiAVw_khTr3ibxSangsHd2ioXZDZkNsG582UKTP8kw"
-      type="text/javascript"></script>
-    <script type="text/javascript"> 
-var map;
+
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map-canvas { height: 100% }
+    </style>
+    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false">
+    </script>
+    <script type="text/javascript">
+
 var userAdded = 1;
 
-var $basedir = "http://sauloal.mine.nu/programs/map/";
-var $latbase = 42.06560675405716;
-var $longbase = 13.359375;
+var layers=[];
+var basedir = "YOUR_WEB_ADDRESS"; //e.g. www.mywebsite.it/mymaps/
 
-var layers = {
- "Maps":
- {"url": $basedir,
-  "name": "Maps",
-  "zoom": 2}<?php
-$directoria = ".";
-
-$dir = @opendir($directoria) or die("Ocorreu Um Erro Ao Tentar Abrir a Directoria: $directoria");
-
+<?php
+$dir = ".";
+$basedir = "YOUR_WEB_ADDRESS"; //e.g. www.mywebsite.it/mymaps/
 $i=0;
-
-$dir = @opendir($directoria) or die("Ocorreu Um Erro Ao Tentar Abrir a Directoria: $directoria");
+$dir = @opendir($dir) or die("Ocorreu Um Erro Ao Tentar Abrir a dir: $dir");
 while ($file = readdir($dir)) {
 	if( is_file("$file") ) {
 		if(strncmp($file,".",1)) {
-			$extencao = strtolower(substr(strrchr($file, "."), 1 ));
-			$extencao = "." . $extencao;
+			$extension = strtolower(substr(strrchr($file, "."), 1 ));
+			$extension = "." . $extension;
 
-			if ($extencao == ".kml")
-			{			
-				$name = strtolower(substr($file,0,(strlen($file)-strlen($extencao))));
-				echo ",\n";
-				echo "\"$name\":\n"; 
-				echo "{\"url\": \$basedir + \"" . $file . "\",\n";
-				echo "\"name\": \"$name\",\n";
-				echo "\"zoom\": 5,\n";
-				echo "\"lat\": \$latbase,\n";
-				echo "\"lng\": \$longbase}";
+			if ($extension == ".kml")
+			{	
+				$name = strtolower(substr($file,0,(strlen($file)-strlen($extension))));
+				echo "layers[" . $i . "] = ";
+				echo "new google.maps.KmlLayer('";
+				echo $basedir . $file . "',\n {preserveViewport: true});\n";
+				$i++;
 			}
-			$i++;
 		}
 	}
 }
-echo " };\n";
-
-
 closedir($dir);
-
 $i=0;
-
 ?>
 
-function onLoad() {
 
-if (parseInt(navigator.appVersion)>3) {
- if (navigator.appName=="Netscape") {
-  winW = window.innerWidth;
-  winH = window.innerHeight;
- }
- if (navigator.appName.indexOf("Microsoft")!=-1) {
-  winW = document.body.offsetWidth;
-  winH = document.body.offsetHeight;
- }
-}
+var map;
 
-  document.getElementById("map").style.height = winH;
-  document.getElementById("map").style.width = winW -160;
+function initialize() {
+		  var latlng = new google.maps.LatLng(46.064151,11.122153);
+		  var myOptions = {
+			zoom: 5,
+			center: latlng,
+			mapTypeIds: google.maps.MapTypeId.ROADMAP
+		  }
+		  map = new google.maps.Map(document.getElementById('map_canvas'),myOptions);
+		  for(var layer in layers) {
+			//alert(layers[layer].name);
+			addTR(layer);
+		  }	  
+		}
+		
 
-  map = new GMap2(document.getElementById("map")); 
 
-  map.setCenter(new GLatLng($latbase, $longbase), 5);
-
-  var mapTypeControl = new GMapTypeControl();
-  var topRight = new GControlPosition(G_ANCHOR_TOP_RIGHT, new GSize(10,10));
-  var bottomRight = new GControlPosition(G_ANCHOR_BOTTOM_RIGHT, new GSize(10,10));
-  map.addControl(mapTypeControl, topRight);
-  GEvent.addListener(map, "dblclick", function() {
-  	map.removeControl(mapTypeControl);
- 	map.addControl(new GMapTypeControl(), bottomRight);
-  });
-  map.addControl(new GLargeMapControl());
-  map.enableDoubleClickZoom();
-  map.enableScrollWheelZoom();
-
-  document.getElementById("url").value = "http://";
-
-  for(var layer in layers) {
-    addTR(layer, layers[layer].name);
-  }
-  
-  //document.getElementById(layer).checked = true;
-  //toggleGeoXML(layer, true);
-
-} 
+		
+		function toggleLayers(i)
+				{
+						
+				  if(layers[i].getMap()==null) {
+					layers[i].setMap(map);
+					
+				  }
+				  else {
+					layers[i].setMap(null);
+				  }
+				  document.getElementById('status').innerHTML += "toggleLayers("+i+") [setMap("+layers[i].getMap()+"] returns status: "+layers[i].getStatus()+"<br>";
+				}
 
 
 
@@ -168,14 +150,19 @@ function addTR(id) {
 
   var input = document.createElement("input");
   input.type = "checkbox";
-  input.id = id;
-  input.onclick = function () { toggleGeoXML(this.id, this.checked) };
+  input.id = "mylayer" + id;
+  input.onclick = function ()  { toggleLayers(id) };
   inputTD.appendChild(input);
 
   var nameTD = document.createElement("td");
   var nameA = document.createElement("a");
   nameA.href = layers[id].url;
-  var name = document.createTextNode(layers[id].name);
+  
+  // the full URL with basedir + filename + extension (.kml)
+  var myfullurl = layers[id].url;
+  // get intex of last / chart
+  var myindex = myfullurl.lastIndexOf("/")+1
+  var name = document.createTextNode(myfullurl.substring(myindex));
   nameA.appendChild(name);
   nameTD.appendChild(nameA);
 
@@ -184,53 +171,23 @@ function addTR(id) {
   document.getElementById("sidebarTBODY").appendChild(layerTR);
 }
 
-function toggleGeoXML(id, checked) {
-  if (checked) {
-    encodedurl = URLEncode(layers[id].url);
-    alert(encodedurl);
-    var geoXml = new GGeoXml(encodedurl);
-    layers[id].geoXml = geoXml;
 
-    if (layers[id].zoom) {
-      map.setZoom(layers[id].zoom);
-    } else {
-      map.setZoom(1);
-    }
-    if (layers[id].lat && layers[id].lng) {
-      map.setCenter(new GLatLng(layers[id].lat, layers[id].lng));
-    } else {
-      map.setCenter(new GLatLng($latbase, $longbase));
-    }
-
-    dml=document.forms["geo"];
-    len = dml.elements.length;
-    var i=0;
-    for( i=0 ; i<len ; i++) {
-	if (dml.elements[i].id != id) {
-		dml.elements[i].checked = false;
-    		map.clearOverlays();
-	}
-    }
-    map.addOverlay(geoXml);
-  } else if (layers[id].geoXml) {
-    map.removeOverlay(layers[id].geoXml);
-  }
-}
-
-
+		
+		
 
     </script>
-
+	
+	
   </head>
 
-  <body onload="onLoad()">
+  <body onload="initialize()">
     <br/>
     <input id="url" value="" size="60"/>
     <input type="button" value="Add" onClick="addGeoXML();"/>
     <br/>
     <br/>
-    <div id="map" style="width: 640px; height: 480px; float:left; border: 1px solid black;"></div>
-    <div id="sidebar" style="float:left; overflow-vertical:scroll; height: 400px; width:150px; border:1px solid black">
+    <div id="map_canvas" style="width: 800px; height: 600px; float:left; border: 1px solid black;"></div>
+    <div id="sidebar" style="float:left; overflow-vertical:scroll; height: 600px; width:300px; border:1px solid black">
     <form name="geo">
     <table id="sidebarTABLE">
     <tbody id="sidebarTBODY">
@@ -239,5 +196,10 @@ function toggleGeoXML(id, checked) {
     </form>
     </div>
 
+	<div id="status"></div>
+
+	
   </body>
 </html>
+
+
