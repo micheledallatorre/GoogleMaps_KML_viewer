@@ -1,0 +1,1 @@
+Original GeoPHP project https://code.google.com/p/geophp/ released under Apache License v2.0.
