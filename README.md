@@ -3,9 +3,12 @@ GoogleMaps KML viewer
 
 PHP system to automatically list and plot KML files in a Google Map.
 
+![Screenshot](images/screenshot.png)
+
 ### Features
 This webpage allows you to automatically display on a Google Map the KML files you have inside the same folder on your website.
-You can also temporarily add other external KML by inserting their URL (e.g. http://www.website.com/kmltest.kml)
+You can also temporarily add other external KML by inserting their URL (e.g. http://www.website.com/kmltest.kml).
+These files will be shown on your webpage, but will be lost once you refresh it.
 
 ### License
 Original [GeoPHP project] (https://code.google.com/p/geophp/) licensed under [Apache Licence 2.0](http://www.apache.org/licenses/LICENSE-2.0.html).
