@@ -22,4 +22,4 @@ Original [GeoPHP project] (https://code.google.com/p/geophp/) licensed under [Ap
  - Open your browser and go to the index.php file on your web server (e.g. www.mywebsite.com/mymaps/index.php)
 
 __TODO__
-- [ ] add options to order KML layers by name, size, etc. (maybe via a sortable JQeuery table)
+- [ ] add options to order KML layers by name, size, etc. (maybe via a sortable JQuery table)
