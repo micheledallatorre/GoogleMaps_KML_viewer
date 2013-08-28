@@ -73,7 +73,9 @@
 		
 		$i=0;
 		$dir = @opendir($dir) or die("Ocorreu Um Erro Ao Tentar Abrir a dir: $dir");
-		while ($file = readdir($dir)) {
+		// scan local dir, order by alphabetical order
+		$myfilenames = scandir("."); 
+		while ($file = current($myfilenames)) {
 			if( is_file("$file") ) {
 				if(strncmp($file,".",1)) {
 					$extension = strtolower(substr(strrchr($file, "."), 1 ));
@@ -89,6 +91,8 @@
 					}
 				}
 			}
+			//advance filenames array
+			next($myfilenames);
 		}
 		closedir($dir);
 		$i=0;
