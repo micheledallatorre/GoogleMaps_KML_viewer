@@ -1,7 +1,9 @@
 GoogleMaps KML viewer
 =====================
 
-PHP system to automatically list and plot KML files in a Google Map.
+PHP/JavaScript web application to automatically display KML files in a specific web folder and plot them on a Google Map.
+
+Forking of GeoPHP project adding new features (e.g. KML files alphabetically ordered) and updating the system to the latest version of Google Maps JavaScript API.
 
 ![Screenshot](images/screenshot.png)
 
