@@ -33,6 +33,13 @@ In that case, you need to get an API key (cfr. https://developers.google.com/map
 #### KML file is not shown
 Check the it does not exceed any limit, see https://developers.google.com/maps/documentation/javascript/kmllayer#restrictions
 
+If for example the KML is bigger than 3 MBs, it will not be shown.
+In that case you can convert it (cfr. https://www.techwalla.com/articles/how-to-convert-kml-to-kmz) to a kmz file, basically by zipping it and changing the extension of the file from zip to kmz.
+Then change line https://github.com/micheledallatorre/GoogleMaps_KML_viewer/blob/master/index.php#L84 accordingly, e.g. as follows:
+```
+					if ($extension == ".kml" || $extension == ".kmz")
+```     
+
 
 __TODO__
 - [ ] add options to order KML layers by name, size, etc. (maybe via a sortable JQuery table)
