@@ -22,6 +22,17 @@ Original [GeoPHP project] (https://code.google.com/p/geophp/) licensed under [Ap
 ### USAGE
  - Simply copy index.php file along with all your KML files into the same web folder
  - Open your browser and go to the index.php file on your web server (e.g. www.mywebsite.com/mymaps/index.php)
+ - See following section if you have troubles
+
+### Troubleshooting
+#### Map is not shown
+If you do not see the map, look at the Javascript Console (F12 to open it) and check if you get the following error:
+`Google Maps API error: MissingKeyMapError https://developers.google.com/maps/documentation/javascript/error-messages#missing-key-map-error`
+In that case, you need to get an API key (cfr. https://developers.google.com/maps/documentation/javascript/get-api-key) and add it as shown in step2 in https://developers.google.com/maps/documentation/javascript/get-api-key at line https://github.com/micheledallatorre/GoogleMaps_KML_viewer/blob/master/index.php#L57
+
+#### KML file is not shown
+Check the it does not exceed any limit, see https://developers.google.com/maps/documentation/javascript/kmllayer#restrictions
+
 
 __TODO__
 - [ ] add options to order KML layers by name, size, etc. (maybe via a sortable JQuery table)
