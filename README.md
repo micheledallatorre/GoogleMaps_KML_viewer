@@ -19,6 +19,9 @@ Original [GeoPHP project] (https://code.google.com/p/geophp/) licensed under [Ap
 - First commit: Forked [GeoPHP project] (https://code.google.com/p/geophp/) and updated it from [Google Maps JavaScript API v2 (Deprecated)](https://developers.google.com/maps/documentation/javascript/v2/reference) to [Google Maps JavaScript API v3](https://developers.google.com/maps/documentation/javascript/)
 - 28/08/2013: KML files displayed in alphabetical order by default 
 
+### Similar software 
+https://tourbuilder.withgoogle.com
+
 ### USAGE
  - Simply copy index.php file along with all your KML files into the same web folder
  - Open your browser and go to the index.php file on your web server (e.g. www.mywebsite.com/mymaps/index.php)
